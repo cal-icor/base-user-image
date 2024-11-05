@@ -1,4 +1,4 @@
-name: Build and push container image, and push update to datahub repo if needed
+name: Build and push container image, and push update to jupyterhub repo if needed
 on:
   workflow_dispatch:
   push:
@@ -52,7 +52,7 @@ jobs:
         with:
           FORCE_REPO2DOCKER_VERSION: jupyter-repo2docker==2024.07.0
           DOCKER_REGISTRY: us-central1-docker.pkg.dev
-          IMAGE_NAME: ${{ env.IMAGE }}
+          IMAGE_NAME: "${{ secrets.GCP_PROJECT_ID }}/${{ env.IMAGE }}"
           # Disable pushing a 'latest' tag, as this often just causes confusion
           LATEST_TAG_OFF: true
           # Put repo contents in /srv/repo, rather than the default (/home/jovyan). The home directory
@@ -78,13 +78,13 @@ jobs:
       IMAGE_TAG: ${{ needs.build-and-push.outputs.image-tag }}
 
     steps:
-      - name: Checkout the datahub repo
+      - name: Checkout the jupyterhub repo
         if: ${{ env.IMAGE_TAG }}
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.DATAHUB_CREATE_PR }}
+          token: ${{ secrets.IMAGE_BUILDER_CREATE_PR }}
           fetch-depth: 0
-          repository: 'berkeley-dsep-infra/datahub'
+          repository: 'cal-icor/cal-icor-hubs'
           sparse-checkout: |
             deployments/
   
@@ -107,7 +107,7 @@ jobs:
       - name: Create feature branch, add, commit, push changes and open a pull request
         if: ${{ env.IMAGE_TAG }}
         env:
-          GH_TOKEN: ${{ secrets.DATAHUB_CREATE_PR }}
+          GH_TOKEN: ${{ secrets.IMAGE_BUILDER_CREATE_PR }}
         run: |
           CHANGED_FILES=$(git status --porcelain -uno | awk '{print $2}')
           git diff
@@ -135,4 +135,4 @@ jobs:
       - name: Print out a message if no PR is created
         if: ${{ ! env.IMAGE_TAG }}
         run: |
-          echo "Image not updated, no push to datahub repo required"
+          echo "Image not updated, no push to jupyterhub repo required"
