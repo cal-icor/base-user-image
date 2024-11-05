@@ -24,3 +24,4 @@ dependencies:
   # pip installed packages, conda is preferred
   - pip:
     - nbconvert[webpdf]==7.16.4
+    - jupysql==0.10.15
