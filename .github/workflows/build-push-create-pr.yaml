@@ -52,7 +52,7 @@ jobs:
         with:
           FORCE_REPO2DOCKER_VERSION: jupyter-repo2docker==2024.07.0
           DOCKER_REGISTRY: us-central1-docker.pkg.dev
-          IMAGE_NAME: "${{ secrets.GCP_PROJECT_ID }}/${{ env.IMAGE }}"
+          IMAGE_NAME: ${{ env.IMAGE }}
           # Disable pushing a 'latest' tag, as this often just causes confusion
           LATEST_TAG_OFF: true
           # Put repo contents in /srv/repo, rather than the default (/home/jovyan). The home directory
