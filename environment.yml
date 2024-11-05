@@ -1,4 +1,4 @@
-name: default-datahub-user-image
+name: base-user-image
 # This is the standard conda configuration file. Use this file to list
 # the conda packages that you need installed in your environment.
 channels:
@@ -18,6 +18,8 @@ dependencies:
   - notebook==7.2.2
   - python==3.11.*
   - pip==24.2
+
+  - pandas==2.2.2
 
   # pip installed packages, conda is preferred
   - pip:
