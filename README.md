@@ -91,7 +91,7 @@ pushed to the Google Artifact Registry.
 Please note that the image will not be built for documentation changes
 (markdown files or any graphic images in the `images/` subdirectory).
 
-#### 2. YAML linting :arrow:_right: [yaml-lint.yaml](https://github.com/cal-icor/base-user-image/blob/main/.github/workflows/yaml-lint.yaml)
+#### 2. YAML linting :arrow_right: [yaml-lint.yaml](https://github.com/cal-icor/base-user-image/blob/main/.github/workflows/yaml-lint.yaml)
 
 This workflow is triggered when a pull request is opened against the default
 branch (`main`). It uses [yamllint](https://yamllint.readthedocs.io/en/stable/)
