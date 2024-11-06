@@ -27,7 +27,7 @@ running the following command (replace `<image-name>` with the actual name
 of the image):
 
 ```
-git clone git@github.com:berkeley-dsep-infra/<image-name>.git
+git clone git@github.com:cal-icor/<image-name>.git
 ```
 
 Now `cd` in to `<image-name>` and set up your local repo to point both at the primary
@@ -46,8 +46,8 @@ $ cd <image-name>
 $ git remote -v # confirm the settings
 origin	git@github.com:<your github username>/<image-name>.git (fetch)
 origin	git@github.com:<your github username>/<image-name>.git (push)
-upstream	git@github.com:berkeley-dsep-infra/<image-name>.git (fetch)
-upstream	git@github.com:berkeley-dsep-infra/<image-name>.git (push)
+upstream	git@github.com:cal-icor/<image-name>.git (fetch)
+upstream	git@github.com:cal-icor/<image-name>.git (push)
 ```
 
 Now you can sync your local repo from `upstream`, and push those changes to your
@@ -69,11 +69,11 @@ git push origin main
 %% https://mermaid.js.org/syntax/stateDiagram.html
 
 stateDiagram-v2
-    image_repo: github.com/berkeley-dsep-infra/hubname-user-image
+    image_repo: github.com/cal-icor/hubname-user-image
     user_repo: github.com/username/hubname-user-image
     image_test_build: Image is built and tested
     image_push_build: Image is built and pushed to registry
-    pr_created: A pull request is automatically<br/>created in the Datahub repo
+    pr_created: A pull request is automatically<br/>created in the Cal-ICOR Jupyterhub repo
     deploy_to_staging: Hub is deployed to staging
     contributor_tests: The contributor logs into the<br/>staging hub and tests the image.
     deploy_to_prod: Hub is deployed to prod
@@ -81,11 +81,11 @@ stateDiagram-v2
     image_repo --> user_repo: Contributor forks the image repo.
     user_repo --> image_repo: Contributor creates a PR.
     image_repo --> image_test_build
-    image_test_build --> image_push_build: Test build passes and Datahub staff merge pull request
+    image_test_build --> image_push_build: Test build passes and Cal-ICOR staff merge pull request
     image_push_build --> pr_created
-    pr_created --> deploy_to_staging: Datahub staff review and merge to staging
+    pr_created --> deploy_to_staging: Cal-ICOR staff review and merge to staging
     deploy_to_staging --> contributor_tests
-    contributor_tests --> deploy_to_prod: Datahub staff create a PR to merge to prod
+    contributor_tests --> deploy_to_prod: Cal-ICOR staff create a PR to merge to prod
 ```
 
 These steps will be explained in detail below.
@@ -179,7 +179,7 @@ Keep the choice for `base` in the GitHub PR user interface, while the choice
 for `head` is your fork.
 
 Once this is complete and if there are no problems, a GitHub action will
-automatically [build and test](https://github.com/berkeley-dsep-infra/hub-user-image-template/blob/main/.github/workflows/build-test-image.yaml)
+automatically [build and test](https://github.com/cal-icor/base-user-image/blob/main/.github/workflows/build-test-image.yaml)
 the image.  If this fails, please check the output of the workflow in the
 action, and make any changes required to get the build to pass.
 
@@ -187,21 +187,21 @@ action, and make any changes required to get the build to pass.
 
 Once the image build has completed successfully, you can request that
 someone review the PR before merging, or you can merge yourself if you are
-confident. This merge will trigger a [second giuthub workflow](https://github.com/berkeley-dsep-infra/hub-user-image-template/blob/main/.github/workflows/build-push-create-pr.yaml)
+confident. This merge will trigger a [second giuthub workflow](https://github.com/cal-icor/base-user-image/blob/main/.github/workflows/build-push-create-pr.yaml)
 that builds the image again, pushes it to the appropriate location in our
 Google Artifact Registry and finally creates a pull request in the
-[Datahub](https://github.com/berkeley-dsep-infra/datahub). This pull request
+[Cal-ICOR Jupyterhub repo](https://github.com/cal-icor/cal-icor-hubs). This pull request
 updates the hash used to identify the freshly built image.
 
-### Pull request review in the Datahub repository
+### Pull request review in the Cal-ICOR hubs repository
 
-Let the Datahub staff know that the pull request was created, and they will
+Let the Cal-ICOR staff know that the pull request was created, and they will
 review and merge it into the `staging` branch. You can notify them via a
-corresponding GitHub Issue, or on the UCTech #datahubs slack channel.
+corresponding GitHub Issue, or on the UCTech #cal-icor-hubs slack channel.
 
 Once it's been merged to `staging`, it will automatically deploy the new image
 to the hub's staging environment in a few minutes and you'll be able to test it
 out!
 
-When you're happy with the results, let Datahub staff know, and they will
+When you're happy with the results, let Cal-ICOR staff know, and they will
 create another pull request to deploy the new image to `prod`.
