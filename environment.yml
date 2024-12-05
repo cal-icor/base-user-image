@@ -10,12 +10,12 @@ dependencies:
   - git==2.47.0
   - jupyter-resource-usage==1.1.0
   - jupyterhub==4.1.6
-  - jupyterlab==4.2.5
+  - jupyterlab==4.3.2
   - jupyter_server==2.14.2
   - jupyterlab-git==0.50.1
   - jupytext==1.16.4
   - nbgitpuller==1.2.1
-  - notebook==7.2.2
+  - notebook==7.3.1
   - python==3.11.*
   - pip==24.2
 
