@@ -25,3 +25,4 @@ dependencies:
   - pip:
     - nbconvert[webpdf]==7.16.4
     - jupysql==0.10.15
+    - otter-grader==6.0.4
