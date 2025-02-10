@@ -38,13 +38,16 @@ jobs:
           sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
           df -h
 
-      - name: Log in to GAR
-        if: steps.changed-files.outputs.any_changed == 'true'
-        uses: docker/login-action@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          registry: us-central1-docker.pkg.dev
-          username: _json_key
-          password: ${{ secrets.GAR_SECRET_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build the image and push to artifact registry
         id: build-and-push
@@ -52,7 +55,7 @@ jobs:
         uses: jupyterhub/repo2docker-action@master
         with:
           FORCE_REPO2DOCKER_VERSION: jupyter-repo2docker==2024.07.0
-          DOCKER_REGISTRY: us-central1-docker.pkg.dev
+          DOCKER_REGISTRY: ${{ secrets.AWS_IMAGE_REGISTRY }}
           IMAGE_NAME: ${{ env.IMAGE }}
           # Disable pushing a 'latest' tag, as this often just causes confusion
           LATEST_TAG_OFF: true
