@@ -43,7 +43,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
+          aws-region: us-east-1 # stupid aws, us-west-2 isn't supported (see https://github.com/marketplace/actions/amazon-ecr-login-action-for-github-actions#configure-credentials)
 
       - name: Login to Amazon ECR
         id: login-ecr
