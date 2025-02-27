@@ -27,7 +27,7 @@ dependencies:
   - jupyter-vscode-proxy==0.6
 
   # data science
-  - pandas==2.2.2
+  - pandas==2.0.2
 
   # pip installed packages, conda is preferred
   - pip:
