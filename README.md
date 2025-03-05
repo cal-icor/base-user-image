@@ -11,10 +11,12 @@ The basic workflow for creating a new hub user image is as follows:
    owner as `cal-icor`.
 
 2. In the new repo, set the appropriate values in the Actions repository
-   variables for `HUB` and `IMAGE`.
+   variables for `HUB` (name of the hub) and `IMAGE` (relative path to the
+   image in ECR).
 
 3. Give the new repo access to the `cal-icor` organization-level
-   secrets:  `GAR_SECRET_KEY` and `IMAGE_BUILDER_CREATE_PR`.
+   secrets:  `AWS_SECRET_ACCESS_KEY`, `AWS_ACCESS_KEY_ID` and
+   `IMAGE_BUILDER_CREATE_PR`.
 
 4. Fork that repository to create your image repository.
 
