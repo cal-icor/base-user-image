@@ -33,6 +33,7 @@ ruby
 
 # Other niceties for command-line work and life
 rsync
+htop
 
 # playwright deps https://jira-secure.berkeley.edu/browse/DH-325
 libnss3
