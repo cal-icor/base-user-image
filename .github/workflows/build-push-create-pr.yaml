@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'LICENSE'
+      - '.github/**'
+      - 'images/**'
 
 jobs:
   build-and-push:
@@ -21,19 +27,7 @@ jobs:
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v44
-        with:
-          files_ignore: |
-            README.md
-            CONTRIBUTING.md
-            LICENSE
-            .github/**
-            images/**
-
       - name: Cleanup disk space
-        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
           df -h
@@ -54,7 +48,6 @@ jobs:
 
       - name: Build the image and push to artifact registry
         id: build-and-push
-        if: steps.changed-files.outputs.any_changed == 'true'
         uses: jupyterhub/repo2docker-action@master
         with:
           FORCE_REPO2DOCKER_VERSION: jupyter-repo2docker==2024.07.0
