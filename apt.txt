@@ -32,6 +32,7 @@ latexdiff
 ruby
 
 # Other niceties for command-line work and life
+htop
 rsync
 
 # playwright deps https://jira-secure.berkeley.edu/browse/DH-325
