@@ -1,7 +1,7 @@
-# hub-user-image-template
+# base-user-image template
 
 This is a template repository for creating dedicated single-user server images
-for UC Berkeley Jupyterhubs.
+for Cal-ICOR Jupyterhubs.
 
 ## Overall workflow
 
