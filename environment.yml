@@ -25,6 +25,7 @@ dependencies:
   # vscode
   - code-server==4.98.2
   - jupyter-vscode-proxy==0.6
+  - jupyter-server-proxy==4.4.0
 
   # data science
   - datascience==0.17.6
