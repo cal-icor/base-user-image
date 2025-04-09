@@ -18,6 +18,7 @@ jobs:
     env:
       DOCKER_CONFIG: $HOME/.docker
       IMAGE: ${{ vars.IMAGE }}
+      GOOGLE_ARTIFACT_REGISTRY: ${{ vars.GOOGLE_ARTIFACT_REGISTRY }}
     outputs:
       image-tag: ${{ steps.build-and-push.outputs.IMAGE_SHA_TAG }}
 
