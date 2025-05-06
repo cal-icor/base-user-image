@@ -1,3 +1,5 @@
+# this shouldn't trigger a build
+
 # <HUBNAME>-user-image
 
 See this repository's [CONTRIBUTING.md](https://github.com/cal-icor/<HUBNAME>-user-image/blob/main/CONTRIBUTING.md) for instructions. That information will eventually be migrated to docs.datahub.berkeley.edu.
