@@ -1,5 +1,12 @@
 # How to contribute and make changes to your user image
 
+## Some notes about this document
+This document was originally written for the
+[UC Berkeley DataHub](https://datahub.berkeley.edu)), and therefore some of the
+screenshots may reference the DataHub GitHub repo and `berkeley-dsep-infra`
+organization.  The concepts and procedures are the same, but the names of the
+repositories and organizations will be different.
+
 ## Setting up your fork and clones
 First, go to your [GitHub profile settings](https://github.com/settings/keys)
 and make sure you have an SSH key uploaded.
