@@ -24,14 +24,22 @@ if (length(new_packages) > 0) {
 }
 
 packages = list(
-  "IRkernel" = "1.3.2",         # required for jupyter R kernel
+  "IRkernel" = "1.3.2", # required for jupyter R kernel
+  "car" = "3.1-3", # https://github.com/cal-icor/cal-icor-hubs/issues/163
   "gdalcubes" = "0.7.0",
+  "ggformula" = "0.12.0", # https://github.com/cal-icor/cal-icor-hubs/issues/163
+  "knitr" = "1.50", # https://github.com/cal-icor/cal-icor-hubs/issues/163
+  "Lock5Data" = "3.0.0", # https://github.com/cal-icor/cal-icor-hubs/issues/163
   "mapgl" = "0.2.0",
   "minioclient" = "0.0.6",
+  "mosaic" = "1.9.1", # https://github.com/cal-icor/cal-icor-hubs/issues/163
+  "pwr" = "1.3-0", # https://github.com/cal-icor/cal-icor-hubs/issues/163
+  "rmarkdown" = "2.29", # https://github.com/cal-icor/cal-icor-hubs/issues/163
   "rstac" = "1.0.1",
   "sf" = "1.0-19",
   "stars" = "0.6-7",
   "terra" = "1.8-10",
+  "tidymodels" = "1.3.0", # https://github.com/cal-icor/cal-icor-hubs/issues/163
   "tidyverse" = "2.0.0"
 
   # Ensure that every entry have a comma, except the last one.
