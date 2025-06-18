@@ -7,3 +7,6 @@ playwright install chromium
 
 # https://github.com/berkeley-dsep-infra/datahub/issues/5827
 git config --system pull.rebase false
+
+mkdir -p ${HOME}/.config/rstudio
+cp rstudio-prefs.json ${HOME}/.config/rstudio

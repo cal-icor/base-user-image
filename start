@@ -2,6 +2,4 @@
 
 # See https://jira-secure.berkeley.edu/browse/DH-305
 export PLAYWRIGHT_BROWSERS_PATH=${CONDA_DIR}
-mkdir -p ${HOME}/.config/rstudio
-cp rstudio-prefs.json ${HOME}/.config/rstudio
 exec "$@"
