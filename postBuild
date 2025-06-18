@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -euox pipefail
 
 # installing chromium browser to enable webpdf conversion using nbconvert
 export PLAYWRIGHT_BROWSERS_PATH=${CONDA_DIR}
@@ -9,4 +9,5 @@ playwright install chromium
 git config --system pull.rebase false
 
 mkdir -p ${HOME}/.config/rstudio
-cp rstudio-prefs.json ${HOME}/.config/rstudio
+md5sum rstudio-prefs.json
+cat rstudio-prefs.json > ${HOME}/.config/rstudio/rstudio-prefs.json
