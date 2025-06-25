@@ -99,16 +99,20 @@ jobs:
             echo "Updated ${deployment} with new image tag ${new_hash}"
           done
 
-      - name: Create feature branch, add, commit, push changes and open a pull request
+      - name: Check if any files were changed
         if: ${{ env.IMAGE_TAG }}
+        run: echo "CHANGED_FILES=$(git status --porcelain -uno | awk '{print $2}')" >> $GITHUB_ENV
+
+      - name: Create feature branch, add, commit, push changes and open a pull request
+        if: ${{ env.CHANGED_FILES }}
         env:
           GH_TOKEN: ${{ secrets.IMAGE_BUILDER_CREATE_PR }}
         run: |
-          CHANGED_FILES=$(git status --porcelain -uno | awk '{print $2}')
+          echo "Files changed: ${{ env.CHANGED_FILES }}"
           git diff
           git checkout -b update-${HUB}-image-tag-${IMAGE_TAG}
           # to be safe, only add files that have changed
-          for file in $(echo -e ${CHANGED_FILES}); do
+          for file in $(echo -e ${{ env.CHANGED_FILES }}); do
             git add ${file}
           done
 
@@ -122,7 +126,7 @@ jobs:
           cat << EOF > ${HOME}/pr-body.txt
           ${MESSAGE}
 
-          ${CHANGED_FILES}
+          ${{ env.CHANGED_FILES }}
           EOF
           BODY=$(cat ${HOME}/pr-body.txt)
           gh pr new -t "${MESSAGE}" -b "${BODY}" -H${BRANCH} -Bstaging
