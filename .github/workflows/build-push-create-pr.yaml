@@ -45,7 +45,7 @@ jobs:
         id: build-and-push
         uses: jupyterhub/repo2docker-action@master
         with:
-          FORCE_REPO2DOCKER_VERSION: jupyter-repo2docker==2024.07.0
+          FORCE_REPO2DOCKER_VERSION: git+https://github.com/jupyterhub/repo2docker.git@e795060 # jupyter-repo2docker==2024.07.0
           DOCKER_REGISTRY: ${{ env.GOOGLE_ARTIFACT_REGISTRY }}
           IMAGE_NAME: ${{ env.IMAGE }}
           # Disable pushing a 'latest' tag, as this often just causes confusion
