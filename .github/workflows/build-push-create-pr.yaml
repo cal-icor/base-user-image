@@ -61,9 +61,6 @@ jobs:
         run: df -h
 
   update-deployment-image-tag:
-    # only run this job if the image was built and pushed successfully.
-    # repo2docker-action emits the image-tag as an output
-    if: ${{ env.IMAGE_TAG }}
     runs-on: ubuntu-latest
     needs: build-and-push
     permissions:
@@ -74,6 +71,9 @@ jobs:
       HUB: ${{ vars.HUB }}
       IMAGE: ${{ vars.IMAGE }}
       IMAGE_TAG: ${{ needs.build-and-push.outputs.image-tag }}
+    # only run this job if the image was built and pushed successfully.
+    # repo2docker-action emits the image-tag as an output
+    if: ${{ needs.build-and-push.outputs.image-tag }}
 
     steps:
       - name: Checkout the jupyterhub repo
