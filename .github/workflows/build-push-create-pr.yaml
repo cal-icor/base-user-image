@@ -99,22 +99,23 @@ jobs:
             echo "Updated ${deployment} with new image tag ${new_hash}"
           done
 
-      - name: Check if any files were changed
+      - name: Check if any files were changed, create feature branch, add, commit, push changes and open a pull request
         if: ${{ env.IMAGE_TAG }}
-        run: |
-          CHANGED_FILES=$(git status --porcelain -uno | awk '{print $2}')
-          echo "CHANGED_FILES=${CHANGED_FILES}" >> $GITHUB_ENV
-
-      - name: Create feature branch, add, commit, push changes and open a pull request
-        if: ${{ env.CHANGED_FILES }}
         env:
           GH_TOKEN: ${{ secrets.IMAGE_BUILDER_CREATE_PR }}
         run: |
-          echo "Files changed: ${{ env.CHANGED_FILES }}"
+          git status --porcelain -uno | awk '{print $2}' > ${HOME}/CHANGED_FILES
+          if [ ! -s ${HOME}/CHANGED_FILES ]; then
+            echo "No files changed, skipping PR creation."
+            exit 0
+          fi
+
+          CHANGED_FILES=$(cat ${HOME}/CHANGED_FILES)
+          echo "Files changed: ${CHANGED_FILES}"
           git diff
           git checkout -b update-${HUB}-image-tag-${IMAGE_TAG}
           # to be safe, only add files that have changed
-          for file in $(echo -e ${{ env.CHANGED_FILES }}); do
+          for file in $(echo -e ${CHANGED_FILES}); do
             git add ${file}
           done
 
@@ -128,12 +129,8 @@ jobs:
           cat << EOF > ${HOME}/pr-body.txt
           ${MESSAGE}
 
-          ${{ env.CHANGED_FILES }}
+          ${CHANGED_FILES}
           EOF
           BODY=$(cat ${HOME}/pr-body.txt)
           gh pr new -t "${MESSAGE}" -b "${BODY}" -H${BRANCH} -Bstaging
 
-      - name: Print out a message if no PR is created
-        if: ${{ ! env.IMAGE_TAG }}
-        run: |
-          echo "Image not updated, no push to jupyterhub repo required"
