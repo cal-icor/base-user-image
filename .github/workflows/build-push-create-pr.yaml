@@ -102,10 +102,8 @@ jobs:
       - name: Check if any files were changed
         if: ${{ env.IMAGE_TAG }}
         run: |
-          ls -la
-          ls -la deployments/
-          git status --porcelain -uno
-          echo "CHANGED_FILES=$(git status --porcelain -uno | awk '{print $2}')" >> $GITHUB_ENV
+          CHANGED_FILES=$(git status --porcelain -uno | awk '{print $2}')
+          echo "CHANGED_FILES=${CHANGED_FILES}" >> $GITHUB_ENV
 
       - name: Create feature branch, add, commit, push changes and open a pull request
         if: ${{ env.CHANGED_FILES }}
