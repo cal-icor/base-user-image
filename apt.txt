@@ -48,4 +48,5 @@ libxrandr2
 libgbm1
 libasound2
 
+dnstools
 net-tools
