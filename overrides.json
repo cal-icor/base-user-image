@@ -1,4 +1,5 @@
 {
+ "@jupyterlab/application-extension:context-menu": {
     "contextMenu": [
         {
             "command": "filebrowser:share-main",
@@ -6,4 +7,5 @@
             "disabled": true
         }
     ]
+ }
 }
