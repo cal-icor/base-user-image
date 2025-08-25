@@ -1,0 +1,9 @@
+{
+    "contextMenu": [
+        {
+            "command": "filebrowser:share-main",
+            "selector": ".jp-DirListing-item[data-isdir]",
+            "disabled": true
+        }
+    ]
+}
