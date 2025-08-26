@@ -22,7 +22,6 @@ for x in \
   ms-toolsai.jupyter \
   ms-python.python \
   quarto.quarto \
-  continue.continue \
   ms-vscode.live-server \
   posit.shiny \
   reditorsupport.r \
