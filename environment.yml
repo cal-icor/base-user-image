@@ -45,6 +45,7 @@ dependencies:
 
   # pip installed packages, conda is preferred
   - pip:
+    # this has yet to land in conda-forge
     - datascience==0.18.0
     # r2d installs jupyter-shiny-proxy, but in the base python env, not in the updated one
     - jupyter-shiny-proxy==1.3
