@@ -4,13 +4,6 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - 'README.md'
-      - 'README-template.md'
-      - 'CONTRIBUTING.md'
-      - 'LICENSE'
-      - '.github/**'
-      - 'images/**'
 
 jobs:
   build-and-push:

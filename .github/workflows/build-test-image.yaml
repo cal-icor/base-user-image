@@ -2,13 +2,6 @@ name: Build and test container image
 
 on:
   pull_request:
-    paths-ignore:
-      - 'README.md'
-      - 'README-template.md'
-      - 'CONTRIBUTING.md'
-      - 'LICENSE'
-      - '.github/**'
-      - 'images/**'
 
 jobs:
   test-build:
