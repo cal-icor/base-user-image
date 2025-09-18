@@ -45,6 +45,10 @@ dependencies:
 
   # pip installed packages, conda is preferred
   - pip:
+    # useful for debugging python package issues
+    - pip-tree==4.0.0
+    - pipdeptree==2.28.0
+
     # this has yet to land in conda-forge
     - datascience==0.18.0
     # r2d installs jupyter-shiny-proxy, but in the base python env, not in the updated one
