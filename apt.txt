@@ -9,7 +9,10 @@ curl
 wget
 vim
 perl-doc
+
+# system tools for debugging etc
 htop
+jq
 
 # Regular build tools for compiling common stuff
 build-essential
