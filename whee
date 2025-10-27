@@ -1,0 +1,251 @@
+
+FROM docker.io/library/buildpack-deps:jammy
+
+# Avoid prompts from apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Set up locales properly
+RUN apt-get -qq update && \
+    apt-get -qq install --yes --no-install-recommends locales > /dev/null && \
+    apt-get -qq purge && \
+    apt-get -qq clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen
+
+ENV LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8
+
+# Use bash as default shell, rather than sh
+ENV SHELL=/bin/bash
+
+# Set up user
+ARG NB_USER
+ARG NB_UID
+ENV USER=${NB_USER} \
+    HOME=/home/${NB_USER}
+
+RUN groupadd \
+        --gid ${NB_UID} \
+        ${NB_USER} && \
+    useradd \
+        --comment "Default user" \
+        --create-home \
+        --gid ${NB_UID} \
+        --no-log-init \
+        --shell /bin/bash \
+        --uid ${NB_UID} \
+        ${NB_USER}
+
+# Base package installs are not super interesting to users, so hide their outputs
+# If install fails for some reason, errors will still be printed
+RUN apt-get -qq update && \
+    apt-get -qq install --yes --no-install-recommends \
+       gettext-base \
+       less \
+       unzip \
+       > /dev/null && \
+    apt-get -qq purge && \
+    apt-get -qq clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get -qq update && \
+    apt-get -qq install --yes \
+       libapparmor1 \
+       libssl-dev \
+       lsb-release \
+       psmisc \
+       sudo \
+       > /dev/null && \
+    apt-get -qq purge && \
+    apt-get -qq clean && \
+    rm -rf /var/lib/apt/lists/*
+EXPOSE 8888
+
+# Environment variables required for build
+ENV APP_BASE=/srv
+ENV CONDA_DIR=${APP_BASE}/conda
+ENV NB_PYTHON_PREFIX=${CONDA_DIR}/envs/notebook
+ENV NPM_DIR=${APP_BASE}/npm
+ENV NPM_CONFIG_GLOBALCONFIG=${NPM_DIR}/npmrc
+ENV NB_ENVIRONMENT_FILE=/tmp/env/environment.lock
+ENV MAMBA_ROOT_PREFIX=${CONDA_DIR}
+ENV MAMBA_EXE=${CONDA_DIR}/bin/mamba
+ENV CONDA_PLATFORM=linux-64
+ENV KERNEL_PYTHON_PREFIX=${NB_PYTHON_PREFIX}
+ENV R_LIBS_USER=${APP_BASE}/rlibs
+# Special case PATH
+ENV PATH=${NB_PYTHON_PREFIX}/bin:${CONDA_DIR}/bin:${NPM_DIR}/bin:/usr/lib/rstudio-server/bin/:${PATH}
+# If scripts required during build are present, copy them
+
+COPY --chown=1000:1000 build_script_files/-2fhome-2fsknapp-2fminiconda3-2fenvs-2fdh-2flib-2fpython3-2e11-2fsite-2dpackages-2frepo2docker-2fbuildpacks-2fconda-2factivate-2dconda-2esh-9fd77e /etc/profile.d/activate-conda.sh
+
+COPY --chown=1000:1000 build_script_files/-2fhome-2fsknapp-2fminiconda3-2fenvs-2fdh-2flib-2fpython3-2e11-2fsite-2dpackages-2frepo2docker-2fbuildpacks-2fconda-2fenvironment-2epy-2d3-2e10-2dlinux-2d64-2elock-f4409c /tmp/env/environment.lock
+
+COPY --chown=1000:1000 build_script_files/-2fhome-2fsknapp-2fminiconda3-2fenvs-2fdh-2flib-2fpython3-2e11-2fsite-2dpackages-2frepo2docker-2fbuildpacks-2fconda-2finstall-2dbase-2denv-2ebash-940c2e /tmp/install-base-env.bash
+RUN TIMEFORMAT='time: %3R' \
+bash -c 'time /tmp/install-base-env.bash' && \
+rm -rf /tmp/install-base-env.bash /tmp/env
+
+RUN mkdir -p ${NPM_DIR} && \
+chown -R ${NB_USER}:${NB_USER} ${NPM_DIR}
+
+RUN apt-get update > /dev/null && \
+apt-get install --yes --no-install-recommends \
+        libclang-dev \
+        libzmq3-dev > /dev/null && \
+wget --quiet -O /tmp/r-4.4.3.deb \
+    https://cdn.rstudio.com/r/ubuntu-$(. /etc/os-release && echo $VERSION_ID | sed 's/\.//')/pkgs/r-4.4.3_1_amd64.deb && \
+apt install --yes --no-install-recommends /tmp/r-4.4.3.deb > /dev/null && \
+rm /tmp/r-4.4.3.deb && \
+apt-get -qq purge && \
+apt-get -qq clean && \
+rm -rf /var/lib/apt/lists/* && \
+ln -s /opt/R/4.4.3/bin/R /usr/local/bin/R && \
+ln -s /opt/R/4.4.3/bin/Rscript /usr/local/bin/Rscript && \
+R --version
+
+RUN apt-get update > /dev/null && \
+if apt-cache search libssl3 | grep -q libssl3; then \
+  RSTUDIO_URL="https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2024.12.0-467-amd64.deb" ;\
+  RSTUDIO_HASH="1493188cdabcc1047db27d1bd0e46947e39562cbd831158c7812f88d80e742b3" ;\
+else \
+  RSTUDIO_URL="https://download2.rstudio.org/server/focal/amd64/rstudio-server-2024.12.0-467-amd64.deb" ;\
+  RSTUDIO_HASH="052540a8df135d9ce7569ddc2fc9637671103934179691bc3e43298336fc3a8e" ;\
+fi && \
+curl --silent --location --fail ${RSTUDIO_URL} > /tmp/rstudio.deb && \
+curl --silent --location --fail https://download3.rstudio.org/ubuntu-18.04/x86_64/shiny-server-1.5.22.1017-amd64.deb > /tmp/shiny.deb && \
+echo "${RSTUDIO_HASH} /tmp/rstudio.deb" | sha256sum -c - && \
+echo '0fa40054f038de464a26f3f8c40180a072228454762b7a12ed50568b3256c236 /tmp/shiny.deb' | sha256sum -c - && \
+apt install -y --no-install-recommends /tmp/rstudio.deb /tmp/shiny.deb && \
+rm /tmp/*.deb && \
+apt-get -qq purge && \
+apt-get -qq clean && \
+rm -rf /var/lib/apt/lists/*
+
+USER ${NB_USER}
+RUN pip install --no-cache \
+    jupyter-rsession-proxy==2.3.0 \
+    jupyter-shiny-proxy==1.3
+
+USER root
+RUN install -o ${NB_USER} -g ${NB_USER} -d /var/log/shiny-server && \
+install -o ${NB_USER} -g ${NB_USER} -d /var/lib/shiny-server && \
+install -o ${NB_USER} -g ${NB_USER} /dev/null /var/log/shiny-server.log && \
+install -o ${NB_USER} -g ${NB_USER} /dev/null /var/run/shiny-server.pid
+
+RUN mkdir -p ${R_LIBS_USER} && \
+chown -R ${NB_USER}:${NB_USER} ${R_LIBS_USER}
+
+RUN sed -i -e '/^R_LIBS_USER=/s/^/#/' /opt/R/4.4.3/lib/R/etc/Renviron && \
+echo "R_LIBS_USER=${R_LIBS_USER}" >> /opt/R/4.4.3/lib/R/etc/Renviron
+
+RUN R RHOME && \
+mkdir -p /etc/rstudio && \
+EXPANDED_CRAN_MIRROR_URL="$(. /etc/os-release && echo https://packagemanager.posit.co/all/__linux__/${VERSION_CODENAME}/2025-04-11+-WbUaQlX | envsubst)" && \
+echo "options(repos = c(CRAN = \"${EXPANDED_CRAN_MIRROR_URL}\"))" > /opt/R/4.4.3/lib/R/etc/Rprofile.site && \
+echo "r-cran-repos=${EXPANDED_CRAN_MIRROR_URL}" > /etc/rstudio/rsession.conf
+
+RUN printf '[*]\nlog-level=info\nlogger-type=stderr\n' > /etc/rstudio/logging.conf
+
+USER ${NB_USER}
+RUN export EXPANDED_CRAN_MIRROR_URL="$(. /etc/os-release && echo https://packagemanager.posit.co/all/__linux__/${VERSION_CODENAME}/2025-04-11+-WbUaQlX | envsubst)" && \
+R --quiet -e "install.packages(c('devtools', 'IRkernel', 'shiny'), repos=Sys.getenv(\"EXPANDED_CRAN_MIRROR_URL\"))" && \
+R --quiet -e "IRkernel::installspec(prefix=Sys.getenv(\"NB_PYTHON_PREFIX\"))"
+
+
+# ensure root user after build scripts
+USER root
+
+# Allow target path repo is cloned to be configurable
+ARG REPO_DIR=${HOME}
+ENV REPO_DIR=${REPO_DIR}
+# Create a folder and grant the user permissions if it doesn't exist
+RUN if [ ! -d "${REPO_DIR}" ]; then \
+        /usr/bin/install -o ${NB_USER} -g ${NB_USER} -d "${REPO_DIR}"; \
+    fi
+
+WORKDIR ${REPO_DIR}
+RUN chown ${NB_USER}:${NB_USER} ${REPO_DIR}
+
+# We want to allow two things:
+#   1. If there's a .local/bin directory in the repo, things there
+#      should automatically be in path
+#   2. postBuild and users should be able to install things into ~/.local/bin
+#      and have them be automatically in path
+#
+# The XDG standard suggests ~/.local/bin as the path for local user-specific
+# installs. See https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+ENV PATH=${HOME}/.local/bin:${REPO_DIR}/.local/bin:${PATH}
+
+# The rest of the environment
+ENV CONDA_DEFAULT_ENV=${KERNEL_PYTHON_PREFIX}
+ENV R_HOME=/opt/R/4.4.3/lib/R
+ENV R_DOC_DIR=${R_HOME}/doc
+ENV LD_LIBRARY_PATH=${R_HOME}/lib:${LD_LIBRARY_PATH}
+# Run pre-assemble scripts! These are instructions that depend on the content
+# of the repository but don't access any files in the repository. By executing
+# them before copying the repository itself we can cache these steps. For
+# example installing APT packages.
+# If scripts required during build are present, copy them
+
+COPY --chown=1000:1000 src/environment.yml ${REPO_DIR}/environment.yml
+
+COPY --chown=1000:1000 src/install.R ${REPO_DIR}/install.R
+RUN apt-get -qq update && \
+apt-get install --yes --no-install-recommends build-essential curl dnsutils htop latexdiff less libasound2 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libcups2 libdbus-1-3 libdrm2 libgbm1 libnspr4 libnss3 libxcomposite1 libxdamage1 libxfixes3 libxkbcommon0 libxrandr2 lmodern net-tools pandoc perl-doc rsync ruby texlive-fonts-recommended texlive-lang-chinese texlive-plain-generic texlive-xetex vim wget && \
+apt-get -qq purge && \
+apt-get -qq clean && \
+rm -rf /var/lib/apt/lists/*
+
+USER ${NB_USER}
+RUN TIMEFORMAT='time: %3R' \
+bash -c 'time ${MAMBA_EXE} env update -p ${NB_PYTHON_PREFIX} --file "environment.yml" && \
+time ${MAMBA_EXE} clean --all -f -y && \
+${MAMBA_EXE} list -p ${NB_PYTHON_PREFIX} \
+'
+
+RUN Rscript install.R && touch /tmp/.preassembled || true && rm -rf /tmp/downloaded_packages
+
+# ensure root user after preassemble scripts
+USER root
+
+# Copy stuff.
+COPY --chown=1000:1000 src/ ${REPO_DIR}/
+
+# Run assemble scripts! These will actually turn the specification
+# in the repository into an image.
+USER ${NB_USER}
+RUN if [ ! -f /tmp/.preassembled ]; then Rscript install.R; rm -rf /tmp/downloaded_packages; fi
+
+
+# Container image Labels!
+# Put these at the end, since we don't want to rebuild everything
+# when these change! Did I mention I hate Dockerfile cache semantics?
+
+LABEL repo2docker.ref="None"
+LABEL repo2docker.repo="local"
+LABEL repo2docker.version="2025.08.0"
+
+# We always want containers to run as non-root
+USER ${NB_USER}
+
+# Make sure that postBuild scripts are marked executable before executing them
+RUN chmod +x postBuild
+RUN ./postBuild
+
+# Add start script
+RUN chmod +x "${REPO_DIR}/start"
+ENV R2D_ENTRYPOINT="${REPO_DIR}/start"
+# Add entrypoint
+ENV PYTHONUNBUFFERED=1
+COPY /python3-login /usr/local/bin/python3-login
+COPY /repo2docker-entrypoint /usr/local/bin/repo2docker-entrypoint
+ENTRYPOINT ["/usr/local/bin/repo2docker-entrypoint"]
+
+# Specify the default command to run
+CMD ["jupyter", "notebook", "--ip", "0.0.0.0"]
+
+
