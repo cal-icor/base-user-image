@@ -3,6 +3,7 @@
 r = getOption("repos")
 r["CRAN"] = "https://packagemanager.posit.co/cran/__linux__/jammy/2025-01-02"
 options(repos = r)
+options(install.packages.check.source = "no")
 
 # Function to install R packages
 install_packages_with_versions <- function(packages) {
