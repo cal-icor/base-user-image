@@ -87,6 +87,7 @@ libprotobuf-dev
 libcairo2-dev
 cmake
 pkg-config
+unixodbc-dev
 
 # R package qpdf
 libpoppler-cpp-dev
