@@ -1,5 +1,9 @@
 #!/usr/bin/env Rscript
 
+r = getOption("repos")
+r["CRAN"] = "https://cloud.r-project.org/"
+options(repos = r)
+
 # Function to install R packages
 install_packages_with_versions <- function(packages) {
   available <- available.packages()
