@@ -59,4 +59,5 @@ libsqlite3-dev
 libssl-dev
 libudunits2-dev
 libprotobuf-dev
+libcairo2-dev
 
