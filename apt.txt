@@ -23,6 +23,7 @@ locales
 nano
 
 # for ops debugging
+dnsutils
 net-tools
 htop
 tree
@@ -105,8 +106,6 @@ libgdal-dev
 libgeos-dev
 libproj-dev
 libmysqlclient-dev
-
-man
 
 # R package magick
 libmagick++-dev
