@@ -86,6 +86,7 @@ libudunits2-dev
 libprotobuf-dev
 libcairo2-dev
 cmake
+pkg-config
 
 # R package qpdf
 libpoppler-cpp-dev
