@@ -58,3 +58,5 @@ libproj-dev
 libsqlite3-dev
 libssl-dev
 libudunits2-dev
+libprotobuf-dev
+
