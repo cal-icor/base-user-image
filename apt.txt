@@ -87,6 +87,8 @@ pkg-config
 unixodbc-dev
 cargo
 libmyth-dev
+libfreetype-dev
+r-cran-av
 
 # R package qpdf
 libpoppler-cpp-dev
