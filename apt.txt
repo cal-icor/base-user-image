@@ -88,7 +88,7 @@ libcairo2-dev
 cmake
 pkg-config
 unixodbc-dev
-
+cargo
 # R package qpdf
 libpoppler-cpp-dev
 
@@ -111,4 +111,3 @@ libmysqlclient-dev
 
 # R package magick
 libmagick++-dev
-
