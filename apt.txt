@@ -116,3 +116,4 @@ libgraphicsmagick++1-dev
 libmagick++-6-headers
 libavfilter7
 libavfilter-dev
+libmyth-dev
