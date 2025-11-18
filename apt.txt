@@ -111,3 +111,7 @@ libmysqlclient-dev
 
 # R package magick
 libmagick++-dev
+graphicsmagick-libmagick-dev-compat
+libgraphicsmagick++1-dev
+libmagick++-6-headers
+libavfilter-dev
