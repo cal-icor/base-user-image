@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 r = getOption("repos")
-r["CRAN"] = "https://packagemanager.posit.co/cran/__linux__/jammy/2025-04-11" # or https://packagemanager.posit.co/all/__linux__/jammy/2025-04-11
+r["CRAN"] = "https://packagemanager.posit.co/cran/__linux__/jammy/2025-04-11"
 options(repos = r)
 
 # Function to install R packages
