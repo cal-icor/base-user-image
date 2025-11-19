@@ -29,6 +29,9 @@ dependencies:
   - jupyter-vscode-proxy==0.6
   - jupyter-server-proxy==4.4.0
 
+  # for math teaching
+  - sage==10.7
+
   # data science
   - datascience==0.18.1
   - matplotlib==3.10.3
