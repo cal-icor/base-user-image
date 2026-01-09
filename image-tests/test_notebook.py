@@ -92,10 +92,19 @@ def run_notebook(notebook, timeout=600):
     return True
 
 
-def test_notebook_execution():
-    for notebook_name in labs:
-        assert run_notebook(notebook_name, True)
+def test_hawthorne_notebook_execution():
+    assert run_notebook("Hawthorne_test.ipynb", True)
+
+
+def test_all_hub_basic_notebook_execution():
+    assert run_notebook("all_hub_basic_notebook.ipynb", True)
+
+
+def test_lec01_executed_1_notebook_execution():
+    assert run_notebook("lec01_executed_1.ipynb", True)
 
 
 if __name__ == "__main__":
-    test_notebook_execution()
+    test_hawthorne_notebook_execution()
+    test_all_hub_basic_notebook_execution()
+    test_lec01_executed_1_notebook_execution()
