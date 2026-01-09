@@ -46,7 +46,7 @@ def clean_notebook_metadata(notebook):
     return cleaned_notebook
 
 
-def run_notebook(notebook, timeout=600):
+def run_notebook(notebook):
     """
     Executes all cells in a Jupyter notebook and saves the output back to the same file.
 
@@ -61,7 +61,7 @@ def run_notebook(notebook, timeout=600):
     Returns:
         bool: True if the notebook executed successfully, False otherwise.
     """
-    notebook_path = os.path.join("notebooks", notebook)
+    notebook_path = os.path.join("image-tests", "notebooks", notebook)
 
     try:
         notebook = nbformat.read(notebook_path, as_version=4)
@@ -93,15 +93,15 @@ def run_notebook(notebook, timeout=600):
 
 
 def test_hawthorne_notebook_execution():
-    assert run_notebook("Hawthorne_test.ipynb", True)
+    assert run_notebook("Hawthorne_test.ipynb")
 
 
 def test_all_hub_basic_notebook_execution():
-    assert run_notebook("all_hub_basic_notebook.ipynb", True)
+    assert run_notebook("all_hub_basic_notebook.ipynb")
 
 
 def test_lec01_executed_1_notebook_execution():
-    assert run_notebook("lec01_executed_1.ipynb", True)
+    assert run_notebook("lec01_executed_1.ipynb")
 
 
 if __name__ == "__main__":
