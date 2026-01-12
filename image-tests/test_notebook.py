@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import copy
 import nbformat
 import os
 from nbclient import NotebookClient
@@ -39,7 +38,7 @@ def run_notebook(notebook):
 
     try:
         # Execute the notebook. This is the core step where all cells are run.
-        executed_notebook = client.execute()
+        notebook = client.execute()
     except Exception:
         return False
 
