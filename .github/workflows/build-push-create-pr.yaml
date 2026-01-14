@@ -19,6 +19,8 @@ concurrency:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 90
     env:
       DOCKER_CONFIG: $HOME/.docker
