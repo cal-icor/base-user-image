@@ -31,10 +31,6 @@ done
 
 # Create a symbolic link for 'deno' in the specified directory structure
 CONDA_PREFIX=/srv/conda/envs/notebook
-if [[ -z "$CONDA_PREFIX" ]]; then 
-    echo "CONDA_PREFIX is not set. Please activate your Conda environment."
-    exit 1
-fi
 
 # Define the target directory for the symbolic link
 TARGET_DIR="$CONDA_PREFIX/bin/tools/x86_64"
