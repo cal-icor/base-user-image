@@ -47,7 +47,7 @@ def run_notebook(notebook):
 
 
 def test_quarto_render():
-    assert subprocess.run(["notebooks/test_r.rmd"], check=True).returncode == 0
+    assert subprocess.run(["image-tests/notebooks/test_r.r"], check=True).returncode == 0
 
 def test_hawthorne_notebook_execution():
     assert run_notebook("Hawthorne_test.ipynb")
