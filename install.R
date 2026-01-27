@@ -64,6 +64,7 @@ packages = list(
   "palmerpenguins" = "0.1.1", # https://github.com/cal-icor/csumb-user-image/issues/25
   "plotly" = "4.11.0", # https://github.com/cal-icor/csumb-user-image/issues/25
   "pwr" = "1.3-0", # https://github.com/cal-icor/cal-icor-hubs/issues/163
+  "quarto" = "1.5.1",
   "rmarkdown" = "2.29", # https://github.com/cal-icor/cal-icor-hubs/issues/163
   "rstac" = "1.0.1",
   "scales" = "1.4.0", # https://github.com/cal-icor/csumb-user-image/issues/25
