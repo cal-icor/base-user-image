@@ -29,18 +29,4 @@ for x in \
     code-server --extensions-dir ${VSCODE_EXTENSIONS} --install-extension $x
 done
 
-# Create a symbolic link for 'deno' in the specified directory structure
-CONDA_PREFIX=/srv/conda/envs/notebook
-
-# Define the target directory for the symbolic link
-TARGET_DIR="$CONDA_PREFIX/bin/tools/x86_64"
-
-# Create the target directory if it does not exist
-mkdir -p "$TARGET_DIR"
-
-# Create the symbolic link for 'deno'
-ln -s "$CONDA_PREFIX/bin/deno" "$TARGET_DIR/deno"
-
-echo "Symbolic link created successfully at $TARGET_DIR/deno"
-
 echo "CONDA_DIR=${CONDA_DIR}" >> .Renviron
