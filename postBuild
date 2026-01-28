@@ -28,5 +28,3 @@ for x in \
   ; do
     code-server --extensions-dir ${VSCODE_EXTENSIONS} --install-extension $x
 done
-
-echo "CONDA_DIR=${CONDA_DIR}" >> .Renviron
