@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import nbformat
 import os
+import subprocess
 from nbclient import NotebookClient
 from pathlib import Path
 
@@ -43,6 +44,12 @@ def run_notebook(notebook):
         return False
 
     return True
+
+
+def test_quarto_render():
+    assert (
+        subprocess.run(["image-tests/notebooks/test_r.r"], check=True).returncode == 0
+    )
 
 
 def test_hawthorne_notebook_execution():
