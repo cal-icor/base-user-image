@@ -91,3 +91,4 @@ install_packages_with_versions(packages)
 
 # install GitHub packages
 remotes::install_github("hrbrmstr/waffle") # https://github.com/cal-icor/cal-icor-hubs/issues/294
+remotes::install_github("speegled/fosdata") # https://github.com/cal-icor/base-user-image/issues/117
