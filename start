@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -f .Renviron ]; then
-  echo "CONDA_DIR=${CONDA_DIR}" >> .Renviron
+  echo -e "CONDA_DIR=${CONDA_DIR}\nR_LIBS_USER=/srv/r" >> .Renviron
 fi
 
 # See https://jira-secure.berkeley.edu/browse/DH-305
