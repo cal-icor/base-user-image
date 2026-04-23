@@ -46,7 +46,7 @@ libxdamage1
 libxfixes3
 libxrandr2
 libgbm1
-libasound2
+liboss4-salsa-asound2
 
 dnsutils
 net-tools
@@ -58,3 +58,4 @@ libproj-dev
 libsqlite3-dev
 libssl-dev
 libudunits2-dev
+

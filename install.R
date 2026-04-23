@@ -51,6 +51,7 @@ packages = list(
   "gridExtra" = "2.3", # https://github.com/cal-icor/csumb-user-image/issues/25
   "janitor" = "2.2.1", # https://github.com/cal-icor/csumb-user-image/issues/1
   "knitr" = "1.50", # https://github.com/cal-icor/cal-icor-hubs/issues/163
+  "languageserver" = "0.3.17",
   "leaflet" = "2.2.3", # https://github.com/cal-icor/csumb-user-image/issues/25
   "lubridate" = "1.9.4", # https://github.com/cal-icor/cal-icor-hubs/issues/294
   "magick" = "2.9.0", # https://github.com/cal-icor/csumb-user-image/issues/25
