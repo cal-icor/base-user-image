@@ -30,6 +30,7 @@ ruby
 
 # Other niceties for command-line work and life
 rsync
+tree
 
 # playwright deps https://jira-secure.berkeley.edu/browse/DH-325
 libnss3
@@ -46,7 +47,7 @@ libxdamage1
 libxfixes3
 libxrandr2
 libgbm1
-libasound2
+liboss4-salsa-asound2
 
 dnsutils
 net-tools
