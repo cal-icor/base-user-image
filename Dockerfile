@@ -31,11 +31,11 @@ RUN apt-get -qq update --yes && \
     locale-gen
 
 # Do not exclude manpages from being installed.
-RUN sed -i '/usr.share.man/s/^/#/' /etc/dpkg/dpkg.cfg.d/excludes
+# RUN sed -i '/usr.share.man/s/^/#/' /etc/dpkg/dpkg.cfg.d/excludes
 
 # Reinstall coreutils so that basic man pages are installed. Due to dpkg's
 # exclusion, they were not originally installed.
-RUN apt --reinstall install coreutils
+# RUN apt --reinstall install coreutils
 
 # Install all apt packages
 COPY apt.txt /tmp/apt.txt
@@ -48,12 +48,12 @@ RUN apt-get -qq update --yes && \
 
 # From docker-ce-packaging
 # Remove diverted man binary to prevent man-pages being replaced with "minimized" message. See docker/for-linux#639
-RUN if  [ "$(dpkg-divert --truename /usr/bin/man)" = "/usr/bin/man.REAL" ]; then \
-        rm -f /usr/bin/man; \
-        dpkg-divert --quiet --remove --rename /usr/bin/man; \
-    fi
+# RUN if  [ "$(dpkg-divert --truename /usr/bin/man)" = "/usr/bin/man.REAL" ]; then \
+#         rm -f /usr/bin/man; \
+#         dpkg-divert --quiet --remove --rename /usr/bin/man; \
+#     fi
 
-RUN mandb -c
+# RUN mandb -c
 
 # These apt packages must be installed into the base stage since they are in
 # system paths rather than /srv.
