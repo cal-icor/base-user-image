@@ -142,7 +142,7 @@ USER ${NB_USER}
 # Install Conda packages
 ENV PATH=${CONDA_DIR}/bin:$PATH
 COPY environment.yml /tmp/environment.yml
-RUN mamba env update -q -p ${CONDA_DIR} -f /tmp/environment.yml
+RUN mamba env update -y -q -p ${CONDA_DIR} -f /tmp/environment.yml
 RUN mamba clean -afy
 
 # =============================================================================
