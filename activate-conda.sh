@@ -13,4 +13,4 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-conda activate /srv/conda
+conda activate /srv/conda/envs/notebook

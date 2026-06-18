@@ -1,4 +1,4 @@
-FROM us-central1-docker.pkg.dev/cal-icor-hubs/user-images/base-python-image:e968bbbaba89 AS base
+FROM us-central1-docker.pkg.dev/cal-icor-hubs/user-images/base-python-image:3fea6b426f5b AS base
 
 USER root
 # Set up common env variables
@@ -142,7 +142,7 @@ USER ${NB_USER}
 # Install Conda packages
 ENV PATH=${CONDA_DIR}/bin:$PATH
 COPY environment.yml /tmp/environment.yml
-RUN mamba env update -y -q -p ${CONDA_DIR} -f /tmp/environment.yml
+RUN mamba env update -y -q -n notebook -f /tmp/environment.yml
 RUN mamba clean -afy
 
 # =============================================================================
@@ -155,10 +155,10 @@ COPY --chown=${NB_USER}:${NB_USER} --from=srv-conda /srv/conda /srv/conda
 COPY --chown=${NB_USER}:${NB_USER} activate-conda.sh /etc/profile.d/activate-conda.sh
 
 USER ${NB_USER}
-ENV PATH=${CONDA_DIR}/bin:${R_LIBS_USER}/bin:${DEFAULT_PATH}:/usr/lib/rstudio-server/bin
+ENV PATH=${CONDA_DIR}/envs/notebook/bin:${CONDA_DIR}/bin:${R_LIBS_USER}/bin:${DEFAULT_PATH}:/usr/lib/rstudio-server/bin
 
 # Install IR kernelspec. Requires python and R.
-RUN R -e "IRkernel::installspec(user = FALSE, prefix='${CONDA_DIR}')"
+RUN R -e "IRkernel::installspec(user = FALSE, prefix='${CONDA_DIR}/envs/notebook')"
 
 # clear out /tmp
 USER root
