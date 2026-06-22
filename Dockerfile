@@ -1,4 +1,4 @@
-FROM us-central1-docker.pkg.dev/cal-icor-hubs/user-images/base-python-image:3fea6b426f5b AS base
+FROM us-central1-docker.pkg.dev/cal-icor-hubs/user-images/base-python-image:aa924984d219 AS base
 
 USER root
 # Set up common env variables
