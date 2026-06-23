@@ -30,13 +30,6 @@ RUN apt-get -qq update --yes && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
-# Do not exclude manpages from being installed.
-# RUN sed -i '/usr.share.man/s/^/#/' /etc/dpkg/dpkg.cfg.d/excludes
-
-# Reinstall coreutils so that basic man pages are installed. Due to dpkg's
-# exclusion, they were not originally installed.
-# RUN apt --reinstall install coreutils
-
 # Install all apt packages
 COPY apt.txt /tmp/apt.txt
 RUN apt-get -qq update --yes && \
@@ -46,14 +39,8 @@ RUN apt-get -qq update --yes && \
     apt-get -qq clean && \
     rm -rf /var/lib/apt/lists/*
 
-# From docker-ce-packaging
-# Remove diverted man binary to prevent man-pages being replaced with "minimized" message. See docker/for-linux#639
-# RUN if  [ "$(dpkg-divert --truename /usr/bin/man)" = "/usr/bin/man.REAL" ]; then \
-#         rm -f /usr/bin/man; \
-#         dpkg-divert --quiet --remove --rename /usr/bin/man; \
-#     fi
-
-# RUN mandb -c
+# Stop the annoying sudo hint from showing up in the terminal
+COPY bash.bashrc /etc/bash.bashrc
 
 # These apt packages must be installed into the base stage since they are in
 # system paths rather than /srv.
@@ -159,20 +146,28 @@ ENV PATH=${CONDA_DIR}/envs/notebook/bin:${CONDA_DIR}/bin:${R_LIBS_USER}/bin:${DE
 # Install IR kernelspec. Requires python and R.
 RUN R -e "IRkernel::installspec(user = FALSE, prefix='${CONDA_DIR}/envs/notebook')"
 
-# clear out /tmp
+# run postBuild script to do any additional setup
+COPY --chown=${NB_USER}:${NB_USER} postBuild /tmp/postBuild
+RUN chmod +x /tmp/postBuild && /tmp/postBuild && rm -rf /tmp/postBuild
+
 USER root
 RUN rm -rf /tmp/*
-# Remove the pip cache created as part of installing mambaforge
 RUN rm -rf /root/.cache
 
-# copy the repo to /srv/repo
-COPY . ${REPO_DIR}/
+RUN install -d -o ${NB_USER} -g ${NB_USER} ${REPO_DIR}
+COPY --chown=${NB_USER}:${NB_USER} . ${REPO_DIR}
 
-# RUN chown -R ${NB_USER}:${NB_USER} /srv/shiny-server
+# Add start script
+RUN chmod +x "${REPO_DIR}/start"
+ENV R2D_ENTRYPOINT="${REPO_DIR}/start"
+# Add entrypoint
+ENV PYTHONUNBUFFERED=1
 
 USER ${NB_USER}
 WORKDIR /home/${NB_USER}
 
 EXPOSE 8888
 
-ENTRYPOINT ["tini", "--"]
+ENTRYPOINT ["/usr/local/bin/repo2docker-entrypoint"]
+
+# ENTRYPOINT ["tini", "--"]
