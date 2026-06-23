@@ -72,6 +72,10 @@ RUN curl --silent --location --fail ${SHINY_SERVER_URL} > /tmp/shiny-server.deb 
     apt install --no-install-recommends --yes /tmp/shiny-server.deb && \
     rm /tmp/shiny-server.deb
 
+RUN apt-get -qq purge && \
+    apt-get -qq clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # R_LIBS_USER is set by default in /etc/R/Renviron, which RStudio loads.
 # We uncomment the default, and set what we wanna - so it picks up
 # the packages we install. Without this, RStudio doesn't see the packages
