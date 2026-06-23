@@ -12,17 +12,15 @@ The basic workflow for creating a new hub user image is as follows:
 
 2. In the new repo, set the appropriate values in the Actions repository
    variables for `HUB` (name of the hub) and `IMAGE` (relative path to the
-   image in ECR).
+   image in GAR).  `HUB` is optional.
 
 3. Give the new repo access to the `cal-icor` organization-level
-   secrets:  `GAR_SECRET_KEY`, `GCP_PROJECT_ID` and
-   `IMAGE_BUILDER_CREATE_PR`.
+   secrets:  `GAR_SECRET_KEY` and `GCP_PROJECT_ID`.
 
 4. Fork that repository to create your image repository.
 
 5. Configure your Hub to use this new image by modifying that deployment's
-   `hubploy.yaml` and add the parent repo's git information to
-   [`repos.txt`](https://github.com/cal-icor/cal-icor-hubs/blob/staging/configs/repos.txt)
+   `common.yaml`.
 
 6. Customize the image by editing `repo2docker` configuration files in your
    fork of the image repository, and then open a pull request to merge these
@@ -84,7 +82,7 @@ commit to the [Cal-ICOR Jupyterhub repo](https://github.com/cal-icor/cal-icor-hu
 repository that modifies `hubploy.yaml` for any hubs using this image with the
 new SHA tag.
 
-#### 1. Build and test container image :arrow_right: [test.yaml](https://github.com/cal-icor/base-user-image/blob/main/.github/workflows/build-test-image.yaml)
+#### 1. Build and test container image :arrow_right: [test.yaml](https://github.com/cal-icor/shared-workflows/blob/main/.github/workflows/build-test-image.yaml)
 
 This workflow is triggered when a pull request is opened against the default
 branch (`main`). During PR builds, the image is **only** built and **not**
@@ -93,18 +91,18 @@ pushed to the Google Artifact Registry.
 Please note that the image will not be built for documentation changes
 (markdown files or any graphic images in the `images/` subdirectory).
 
-#### 2. YAML linting :arrow_right: [yaml-lint.yaml](https://github.com/cal-icor/base-user-image/blob/main/.github/workflows/yaml-lint.yaml)
+#### 2. YAML linting :arrow_right: [yaml-lint.yaml](https://github.com/cal-icor/shared-workflows/blob/main/.github/workflows/yaml-lint.yaml)
 
 This workflow is triggered when a pull request is opened against the default
 branch (`main`). It uses [yamllint](https://yamllint.readthedocs.io/en/stable/)
 to check all yaml files in the repo for correctness.
 
-#### 3. **Temporarily disabled:** Test this PR on Binder Badge :arrow_right: [binder.yaml](https://github.com/cal-icor/base-user-image/blob/main/.github/workflows/binder.yaml.disable)
+#### 3. **Temporarily disabled:** Test this PR on Binder Badge :arrow_right: [binder.yaml](https://github.com/cal-icor/shared-workflows/blob/main/.github/workflows/binder.yaml.disable)
 
 Since our images are typically large and take > 10m to build, this means that
 Binderhub builds will currently time out.
 
-#### 4. Build, test and push container image :arrow_right: [build-push-open-pr.yaml](https://github.com/cal-icor/base-user-image/blob/main/.github/workflows/build-push-create-pr.yaml)
+#### 4. Build, test and push container image :arrow_right: [build-push-open-pr.yaml](https://github.com/cal-icor/shared-workflows/blob/main/.github/workflows/build-push-create-pr.yaml)
 
 After a PR is merged to `main`, this workflow builds the image again, pushes it
 to the Google Artifact Registry and then creates a commit that updates the image tag
