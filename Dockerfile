@@ -134,7 +134,6 @@ FROM base AS srv-conda
 # Create user owned conda dir
 # This lets users temporarily install packages
 RUN install -d -o ${NB_USER} -g ${NB_USER} ${CONDA_DIR}
-RUN install -d -o ${NB_USER} -g ${NB_USER} ${OBITOOLS_DIR}
 
 # Install conda environment as our user
 USER ${NB_USER}

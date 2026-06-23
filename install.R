@@ -29,6 +29,8 @@ if (length(new_packages) > 0) {
 }
 
 packages = list(
+  "DescTools" = "0.99.60", # https://github.com/cal-icor/csumb-user-image/issues/70
+  "BSDA" = "1.2.2", # https://github.com/cal-icor/csumb-user-image/issues/70
   "GGally" = "2.4.0", # https://github.com/cal-icor/csumb-user-image/issues/25
   "IRkernel" = "1.3.2", # required for jupyter R kernel
   "Lock5Data" = "3.0.0", # https://github.com/cal-icor/cal-icor-hubs/issues/163
@@ -47,6 +49,7 @@ packages = list(
   "ggcorrplot" = "0.1.4.1", # https://github.com/cal-icor/csumb-user-image/issues/25
   "ggdist" = "3.3.3", # https://github.com/cal-icor/csumb-user-image/issues/25
   "ggformula" = "0.12.0", # https://github.com/cal-icor/cal-icor-hubs/issues/163
+  "ggplot2" = "4.0.2",
   "gghighlight" = "0.5.0", # https://github.com/cal-icor/csumb-user-image/issues/25
   "ggmosaic" = "0.3.3", # https://github.com/cal-icor/csumb-user-image/issues/1
   "ggpubr" = "0.6.2", # https://github.com/cal-icor/base-user-image/issues/112
@@ -75,6 +78,7 @@ packages = list(
   "plotly" = "4.11.0", # https://github.com/cal-icor/csumb-user-image/issues/25
   "pwr" = "1.3-0", # https://github.com/cal-icor/cal-icor-hubs/issues/163
   "quarto" = "1.5.1",
+  "reticulate" = "1.43.0"
   "rmarkdown" = "2.29", # https://github.com/cal-icor/cal-icor-hubs/issues/163
   "rstac" = "1.0.1",
   "scales" = "1.4.0", # https://github.com/cal-icor/csumb-user-image/issues/25
