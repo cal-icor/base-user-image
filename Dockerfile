@@ -1,4 +1,4 @@
-FROM us-central1-docker.pkg.dev/cal-icor-hubs/user-images/base-python-image:aa924984d219 AS base
+FROM us-central1-docker.pkg.dev/cal-icor-hubs/user-images/base-python-image:aa924984d219
 
 USER root
 # Set up common env variables
@@ -102,48 +102,28 @@ COPY rstudio-config/rstudio/file-locks /etc/rstudio/file-locks
 
 
 # =============================================================================
-# This stage exists to build /srv/r.
-FROM base AS srv-r
+# Build /srv/r and /srv/conda in place. These were previously separate build
+# stages COPYed into a final stage, but that left a shadowed ~4.3 GB duplicate
+# of base-python-image's /srv/conda in the image and forced two large,
+# export-expensive COPY layers. Installing in place keeps a single /srv/conda
+# and /srv/r.
 
 USER root
-# Create user owned R libs dir
-# This lets users temporarily install packages
+# Create user owned R libs dir so users can temporarily install packages
 RUN install -d -o ${NB_USER} -g ${NB_USER} ${R_LIBS_USER}
 
-# Install R libraries as our user
+# Install R packages as our user
 USER ${NB_USER}
-
-# Install R packages
 COPY install.R /tmp/
 RUN /tmp/install.R
 
-# =============================================================================
-# This stage exists to build /srv/conda.
-FROM base AS srv-conda
-
-# USER root
-# Create user owned conda dir
-# This lets users temporarily install packages
-RUN install -d -o ${NB_USER} -g ${NB_USER} ${CONDA_DIR}
-
-# Install conda environment as our user
-USER ${NB_USER}
-
-# Install Conda packages
+# Install conda packages into the inherited notebook env, in place. /srv/conda
+# already exists (from base-python-image) and is owned by ${NB_USER}.
 ENV PATH=${CONDA_DIR}/bin:$PATH
 COPY environment.yml /tmp/environment.yml
-RUN mamba env update -y -q -n notebook -f /tmp/environment.yml
-RUN mamba clean -afy
+RUN mamba env update -y -q -n notebook -f /tmp/environment.yml && \
+    mamba clean -afy
 
-# =============================================================================
-# This stage consumes base and import /srv/r and /srv/conda.
-FROM base AS final
-
-USER root
-COPY --chown=${NB_USER}:${NB_USER} --from=srv-r /srv/r /srv/r
-COPY --chown=${NB_USER}:${NB_USER} --from=srv-conda /srv/conda /srv/conda
-
-USER ${NB_USER}
 ENV PATH=${CONDA_DIR}/envs/notebook/bin:${CONDA_DIR}/bin:${R_LIBS_USER}/bin:${DEFAULT_PATH}:/usr/lib/rstudio-server/bin
 
 # Install IR kernelspec. Requires python and R.
