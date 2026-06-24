@@ -12,6 +12,4 @@ on:
 
 jobs:
   test-build:
-    uses: cal-icor/shared-workflows/.github/workflows/build-test-image.yaml@main
-    secrets:
-      GAR_SECRET_KEY: ${{ secrets.GAR_SECRET_KEY }}
+    uses: cal-icor/shared-workflows/.github/workflows/build-test-image.yaml@0.4.3
