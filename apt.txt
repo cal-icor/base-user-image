@@ -1,61 +1,23 @@
-# Some linux packages for basic terminal work, particularly
-# oriented at users new to Unix/cmd line environments.
+# Packages here supplement what the pinned base-python-image (the FROM base)
+# already provides. Anything already in base -- including via Ubuntu 24.04 "t64"
+# renamed packages (e.g. libcups2t64, libatspi2.0-0t64) -- is intentionally
+# omitted to keep this list minimal. Verified against base aa924984d219.
 
-# installing less as more just isn't enough
-less
+# libzmq.so.5 for pbdZMQ -> IRkernel::installspec (base has no system libzmq).
+libzmq5
 
-# Download tools
-curl
-wget
-vim
-perl-doc
-htop
-
-# Regular build tools for compiling common stuff
-build-essential
-
-# Dependencies for nbconvert
-texlive-xetex
-texlive-fonts-recommended
-texlive-plain-generic
-texlive-lang-chinese
-lmodern
-
-# Other useful document-related tools
-pandoc
-latexdiff
-
-# Some useful git utilities use basic Ruby
-ruby
-
-# Other niceties for command-line work and life
-rsync
-tree
-
-# playwright deps https://jira-secure.berkeley.edu/browse/DH-325
-libnss3
-libnspr4
-libdbus-1-3
-libatk1.0-0
-libatk-bridge2.0-0
-libcups2
-libdrm2
-libxkbcommon0
-libatspi2.0-0
-libxcomposite1
-libxdamage1
-libxfixes3
-libxrandr2
-libgbm1
-liboss4-salsa-asound2
-
-dnsutils
-net-tools
-
+# System libraries for the geospatial R packages (sf, terra, stars, gdalcubes,
+# mapgl, rstac). Base provides none of libgdal/libgeos/libproj/libudunits2.
 libgdal-dev
-gdal-bin
 libgeos-dev
 libproj-dev
-libsqlite3-dev
-libssl-dev
 libudunits2-dev
+
+# libMagick++ for the R 'magick' package. Base ships MagickWand/Core but not
+# the Magick++ C++ API that magick links against.
+libmagick++-dev
+
+# Real ALSA library for headless chromium (webpdf "Save and Export Notebook As
+# -> PDF"). Base only ships the incomplete liboss4-salsa-asound2 shim, which
+# lacks snd_device_name_get_hint@ALSA_0.9 and crashes chromium.
+libasound2t64
