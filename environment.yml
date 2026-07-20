@@ -11,7 +11,8 @@ dependencies:
   - attrs==26.1.0
   - gh-scoped-creds==4.1
   - git==2.54.0
-  - ipython==9.14.1
+  - ipykernel==7.3.0
+  - ipython==9.15.0
   - jupyter-resource-usage=1.2.1
   # pinned to match the deployed hub image's jupyterhub version
   - jupyterhub==5.5.0
