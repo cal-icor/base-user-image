@@ -62,19 +62,27 @@ upstream        git@github.com:cal-icor/fancy-new-user-image.git (fetch)
 upstream        git@github.com:cal-icor/fancy-new-user-image.git (push)
 ```
 
-5. Configure any hubs to use this new image by modifying that deployment's
-   `common.yaml`.  Here's [an example](https://github.com/cal-icor/cal-icor-hubs/blob/staging/deployments/csumb/config/common.yaml#L19)
-   for a live hub.
+#### 5. Configure hubs to use this new image
 
-6. Customize the image by editing [`repo2docker` configuration files](https://repo2docker.readthedocs.io/en/latest/configuration/)
-   in your fork of the image repository, and then open a pull request to merge
-   these changes to the `main` branch of the parent repo in the `cal-icor`
-   organization.
+You can have a hub use the new image by modifying that deployment's
+`common.yaml`.  Here's [an example](https://github.com/cal-icor/cal-icor-hubs/blob/staging/deployments/csumb/config/common.yaml#L19)
+for a live hub.
 
-7. In addition, we also provide a template for a simplified `README.md`
-   [here](https://github.com/cal-icor/cal-icor-hubs/blob/main/README-template.md).
-   We strongly recommend replacing the original `README.md` with an updated
-   version from the template.
+#### 6. Customize the image
+
+If you need to change any of the default packages, do so by editing the
+[`repo2docker` configuration files](https://repo2docker.readthedocs.io/en/latest/configuration/)
+on a feature branch in your fork of the image repository, and then open a pull
+request to merge these changes to the `main` branch of the parent repo in the
+`cal-icor` organization.  More detailed instructions are found in
+[CONTRIBUTING.md](https://github.com/cal-icor/base-user-image/blob/main/CONTRIBUTING.md).
+
+#### 7. Update the new image's README
+
+In addition, we also provide a template for a simplified `README.md`
+[here](https://github.com/cal-icor/cal-icor-hubs/blob/main/README-template.md).
+We strongly recommend replacing the original `README.md` with an updated
+version from this template.
 
 These steps are just a summary, and much more detailed instructions are
 [located here](https://docs.cal-icor.org/new-image/).
