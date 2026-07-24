@@ -3,35 +3,65 @@
 This is a template repository for creating dedicated single-user server images
 for Cal-ICOR Jupyterhubs.
 
-## Overall workflow
+## Creating a new user image repository
+
+This repo can be used as a template to create a new image for Jupyterhub
+deployments.
+
+**Important!** Do not create a *fork* of this repository, as a fork is designed
+to track the commit history of both itself and the parent (upstream)
+repositories.  Instead, we want the new image repo (created as a template) to
+have it's own history starting upon creation.
 
 The basic workflow for creating a new hub user image is as follows:
 
 1. Create a new repository using this one as a template.  Be sure to set the
-   owner as `cal-icor`.
+   owner as `cal-icor` and `Public` visibility.
 
-2. In the new repo, set the appropriate values in the Actions repository
-   variables for `HUB` (name of the hub) and `IMAGE` (relative path to the
-   image in GAR).  `HUB` is optional.
+![click on the upper right corner and use the template to create a new repo](images/template.png)
 
-3. Give the new repo access to the `cal-icor` organization-level
-   secrets:  `GAR_SECRET_KEY` and `GCP_PROJECT_ID`.
+![settings for the new repo](images/new-repo.png)
 
-4. Fork that repository to create your image repository.
+2. In the new repo, under `Settings`, select `Secrets and Variables` on the left
+   menu bar, and then click on `Variables`. Add repository variables for `HUB`
+   (name of the hub -- optional) and `IMAGE` (relative path to the image in GAR).
 
-5. Configure your Hub to use this new image by modifying that deployment's
-   `common.yaml`.
+![variables](images/actions-variables.png)
 
-6. Customize the image by editing `repo2docker` configuration files in your
-   fork of the image repository, and then open a pull request to merge these
-   changes to the `main` branch of the parent repo in the
-   `cal-icor` organization.
+3. Create a fork the new repository to create your image repository. In your
+   fork, under `Settings --> Actions --> General` click on `Disable actions`
+   and save.
+
+![disable actions in your fork](images/disable-actions.png)
+
+4. Clone the new repo to your device, and then set the git remotes to have
+   `upstream` point to the repo in the `cal-icor` org, and `origin` pointing
+   to your fork. When completed, `git remote -v` should show this:
+
+``` bash
+$ git remote -v
+origin  git@github.com:<user>/fancy-new-user-image.git (fetch)
+origin  git@github.com:<user>/fancy-new-user-image.git (push)
+upstream        git@github.com:cal-icor/fancy-new-user-image.git (fetch)
+upstream        git@github.com:cal-icor/fancy-new-user-image.git (push)
+```
+
+5. Configure any hubs to use this new image by modifying that deployment's
+   `common.yaml`.  Here's [an example](https://github.com/cal-icor/cal-icor-hubs/blob/staging/deployments/csumb/config/common.yaml#L19)
+   for a live hub.
+
+6. Customize the image by editing [`repo2docker` configuration files](https://repo2docker.readthedocs.io/en/latest/configuration/)
+   in your fork of the image repository, and then open a pull request to merge
+   these changes to the `main` branch of the parent repo in the `cal-icor`
+   organization.
+
+7. In addition, we also provide a template for a simplified `README.md`
+   [here](https://github.com/cal-icor/cal-icor-hubs/blob/main/README-template.md).
+   We strongly recommend replacing the original `README.md` with an updated
+   version from the template.
 
 These steps are just a summary, and much more detailed instructions are
-[located here](https://docs.datahub.berkeley.edu/admins/howto/new-image.html).
-
-In addition, we also provide a template for a simplified `README.md`
-[here](https://github.com/cal-icor/cal-icor-hubs/blob/main/README-template.md).
+[located here](https://docs.cal-icor.org/new-image/).
 
 ### Modifying the new image
 
@@ -63,6 +93,10 @@ The repo provides a default `environment.yml` conda configuration file for
 is used to define the python packages that will be installed during the image
 build process, either via `conda` or `pip`.
 
+If you want to do a more customized image build, you can always convert this
+image to be built from a `Dockerfile`.  One example is the
+[CSUMB user image](https://github.com/cal-icor/csumb-user-image)
+
 **Note:**
 A complete list of configuration files that can be added to the
 repository and used by `repo2docker` to build the Docker image can be found in
@@ -82,7 +116,7 @@ commit to the [Cal-ICOR Jupyterhub repo](https://github.com/cal-icor/cal-icor-hu
 repository that modifies `hubploy.yaml` for any hubs using this image with the
 new SHA tag.
 
-#### 1. Build and test container image :arrow_right: [test.yaml](https://github.com/cal-icor/shared-workflows/blob/main/.github/workflows/build-test-image.yaml)
+#### 1. Build and test container image :arrow_right: [build-test-image.yaml](https://github.com/cal-icor/shared-workflows/blob/main/.github/workflows/build-test-image.yaml)
 
 This workflow is triggered when a pull request is opened against the default
 branch (`main`). During PR builds, the image is **only** built and **not**

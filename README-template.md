@@ -1,19 +1,20 @@
-# <HUBNAME>-user-image
+# \<HUBNAME>-user-image
 
-See this repository's [CONTRIBUTING.md](https://github.com/cal-icor/<HUBNAME>-user-image/blob/main/CONTRIBUTING.md) for instructions. That information will eventually be migrated to docs.datahub.berkeley.edu.
+See this repository's [CONTRIBUTING.md](https://github.com/cal-icor/<HUBNAME>-user-image/blob/main/CONTRIBUTING.md) for instructions. That information will eventually be migrated to the [Cal-ICOR documentation](https://docs.cal-icor.org).
 
-# building the image locally
+## building the image locally
 
 You should use [repo2-docker](https://repo2docker.readthedocs.io/en/latest/) to build and use/test the image on your own device before you push and create a PR.  It's better (and typically faster) to do this first before using CI/CD.  There's no need to waste Github Action minutes to test build images when you can do this on your own device!
 
 Run `repo2docker` from inside the cloned image repo.  To run on a linux/WSL2 linux shell:
-```
+
+``` bash
 repo2docker . # <--- the path to the repo
 ```
 
 If you are using an ARM CPU (Apple M* silicon), you will need to run `jupyter-repo2docker` with the following arguments:
 
-```
+``` bash
 jupyter-repo2docker --user-id=1000 --user-name=jovyan \
   --Repo2Docker.platform=linux/amd64 \
   --target-repo-dir=/home/jovyan/.cache \
@@ -30,14 +31,14 @@ Once you've built the image, you can run the same browser tests CI runs. Despite
 First, build the image with a name you can reference (the plain `repo2docker .` form above autogenerates one):
 
 ``` bash
-jupyter-repo2docker --no-run --image-name c-sharp-user-image:local .
+jupyter-repo2docker --no-run --image-name <whatever the name is>:local .
 ```
 
 Start the image as a container serving JupyterLab on port 8888 with no token:
 
 ``` bash
 docker run -d --name browser-test-container -p 8888:8888 \
-  c-sharp-user-image:local \
+  <whatever the name is>:local \
   jupyter lab --ip=0.0.0.0 --no-browser --ServerApp.token=''
 ```
 
