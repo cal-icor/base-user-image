@@ -13,35 +13,51 @@ to track the commit history of both itself and the parent (upstream)
 repositories.  Instead, we want the new image repo (created as a template) to
 have it's own history starting upon creation.
 
-The basic workflow for creating a new hub user image is as follows:
+### Basic workflow for creating a new hub user image
 
-1. Create a new repository using this one as a template.  Be sure to set the
-   owner as `cal-icor` and `Public` visibility.
+#### 1. Create a new repository using this one as a template
+
+Be sure to set the owner as `cal-icor` and `Public` visibility.
 
 ![click on the upper right corner and use the template to create a new repo](images/template.png)
 
 ![settings for the new repo](images/new-repo.png)
 
-2. In the new repo, under `Settings`, select `Secrets and Variables` on the left
-   menu bar, and then click on `Variables`. Add repository variables for `HUB`
-   (name of the hub -- optional) and `IMAGE` (relative path to the image in GAR).
+#### 2. Set the new image secrets and variables
+
+In the new repo, under `Settings`, select `Secrets and Variables` on the left
+menu bar, and then click on `Variables`. Add repository variables for `HUB`
+(name of the hub -- optional) and `IMAGE` (relative path to the image in GAR).
 
 ![variables](images/actions-variables.png)
 
-3. Create a fork the new repository to create your image repository. In your
-   fork, under `Settings --> Actions --> General` click on `Disable actions`
-   and save.
+#### 3. Create a fork the new repository
+
+To perform work on the new image, you first need to create a fork of the new
+one. When your fork is created, turn off the Github Actions so they only run
+on the new image repo.  This is found under `Settings --> Actions --> General`,
+then click on `Disable actions` and save.
 
 ![disable actions in your fork](images/disable-actions.png)
 
-4. Clone the new repo to your device, and then set the git remotes to have
-   `upstream` point to the repo in the `cal-icor` org, and `origin` pointing
-   to your fork. When completed, `git remote -v` should show this:
+#### 4. Clone the new repo and set git remotes
+
+Clone the new image repo to your device, and then set the git remotes to have
+`upstream` point to the repo in the `cal-icor` org, and `origin` pointing to
+your fork.
+
+``` bash
+git clone git@github.com:cal-icor/fancy-new-user-image.git
+git remote rename origin upstream
+git remote add origin git@github.com:<username>/fancy-new-user-image.git
+```
+
+When completed, `git remote -v` should show this:
 
 ``` bash
 $ git remote -v
-origin  git@github.com:<user>/fancy-new-user-image.git (fetch)
-origin  git@github.com:<user>/fancy-new-user-image.git (push)
+origin  git@github.com:<username>/fancy-new-user-image.git (fetch)
+origin  git@github.com:<username>/fancy-new-user-image.git (push)
 upstream        git@github.com:cal-icor/fancy-new-user-image.git (fetch)
 upstream        git@github.com:cal-icor/fancy-new-user-image.git (push)
 ```
@@ -131,10 +147,7 @@ This workflow is triggered when a pull request is opened against the default
 branch (`main`). It uses [yamllint](https://yamllint.readthedocs.io/en/stable/)
 to check all yaml files in the repo for correctness.
 
-#### 3. **Temporarily disabled:** Test this PR on Binder Badge :arrow_right: [binder.yaml](https://github.com/cal-icor/shared-workflows/blob/main/.github/workflows/binder.yaml.disable)
-
-Since our images are typically large and take > 10m to build, this means that
-Binderhub builds will currently time out.
+#### 3. Lint workflow files on pull requests :arrow_right: [action-lint-prs.yaml](https://github.com/cal-icor/shared-workflows/blob/main/.github/workflows/action-lint-prs.yaml)
 
 #### 4. Build, test and push container image :arrow_right: [build-push-open-pr.yaml](https://github.com/cal-icor/shared-workflows/blob/main/.github/workflows/build-push-create-pr.yaml)
 
@@ -143,3 +156,8 @@ to the Google Artifact Registry and then creates a commit that updates the image
 for any hubs that use this image. That commit is then pushed to the 
 [Cal-ICOR Jupyterhub repo](https://github.com/cal-icor/cal-icor-hubs), and you will
 then need to manually create a pull requests to merge and deploy the new image.
+
+#### 5. **Temporarily disabled:** Test this PR on Binder Badge :arrow_right: [binder.yaml](https://github.com/cal-icor/shared-workflows/blob/main/.github/workflows/binder.yaml.disable)
+
+Since our images are typically large and take > 10m to build, this means that
+Binderhub builds will currently time out.
