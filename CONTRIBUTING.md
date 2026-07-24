@@ -1,6 +1,7 @@
 # How to contribute and make changes to your user image
 
 ## Some notes about this document
+
 This document was originally written for the
 [UC Berkeley DataHub](https://datahub.berkeley.edu)), and therefore some of the
 screenshots may reference the DataHub GitHub repo and `berkeley-dsep-infra`
@@ -8,6 +9,7 @@ organization.  The concepts and procedures are the same, but the names of the
 repositories and organizations will be different.
 
 ## Setting up your fork and clones
+
 First, go to your [GitHub profile settings](https://github.com/settings/keys)
 and make sure you have an SSH key uploaded.
 
@@ -15,7 +17,6 @@ Next, go to the GitHub repo of the image that you'd like to work on and create
 a fork.  To do this, click on the `fork` button and then `Create fork`.
 
 ![Forking](images/create-fork.png)
-
 
 After you create your fork of the new image repository, you should disable
 GitHub Actions **only for your fork**.  To do this, navigate to `Settings` -->
@@ -33,7 +34,7 @@ Now `cd` in to a handy folder on your device, and clone the primary repo by
 running the following command (replace `<image-name>` with the actual name
 of the image):
 
-```
+``` bash
 git clone git@github.com:cal-icor/<image-name>.git
 ```
 
@@ -41,14 +42,15 @@ Now `cd` in to `<image-name>` and set up your local repo to point both at the pr
 image repo (`upstream`) and your fork (`origin`).  After the initial clone,
 `origin` will be pointing to the main repo and we'll need to change that.
 
-```
+``` bash
 cd <image-name>
 git remote rename origin upstream # rename origin to upstream
 git remote add origin git@github.com:<your github username>/<image-name>.git # add your fork as origin
 ```
 
 To confirm these changes, run `git remote -v` and see if everything is correct:
-```
+
+``` bash
 $ cd <image-name>
 $ git remote -v # confirm the settings
 origin	git@github.com:<your github username>/<image-name>.git (fetch)
@@ -60,7 +62,7 @@ upstream	git@github.com:cal-icor/<image-name>.git (push)
 Now you can sync your local repo from `upstream`, and push those changes to your
 fork (`origin`):
 
-```
+``` bash
 git checkout main && \
 git fetch --prune --all && \
 git rebase upstream/main && \
@@ -104,7 +106,7 @@ You should also make sure that your repo is up-to-date with this one prior
 to making changes. This is because other contributors may have pushed changes
 after you last synced with this repo but before you upstreamed your changes.
 
-```
+``` bash
 git checkout main && \
 git fetch --prune --all && \
 git rebase upstream/main && \
@@ -113,7 +115,7 @@ git push origin main
 
 To create a new feature branch and switch to it, run the following command:
 
-```
+``` bash
 git checkout -b <branch name>
 ```
 
@@ -130,14 +132,15 @@ when you can do this on your own device!
 
 Run `repo2docker` from inside the cloned image repo.  To run on a linux/WSL2
 or regular linux shell:
-```
+
+``` bash
 repo2docker . # <--- the path to the repo
 ```
 
 If you are using an ARM CPU (Apple M* silicon), you will need to run
 `jupyter-repo2docker` with the following arguments:
 
-```
+``` bash
 jupyter-repo2docker --user-id=1000 --user-name=jovyan \
   --Repo2Docker.platform=linux/amd64 \
   --target-repo-dir=/home/jovyan/.cache \
@@ -153,19 +156,19 @@ server, add `--no-run` to the arguments (before the final `.`).
 When you're ready to push these changes, first you'll need to stage them for a
 commit:
 
-```
+``` bash
 git add <file1> <file2> ...
 ```
 
 Commit these changes locally:
 
-```
+``` bash
 git commit -m "some pithy commit description"
 ```
 
 Now push to your fork:
 
-```
+``` bash
 git push origin <branch name>
 ```
 
