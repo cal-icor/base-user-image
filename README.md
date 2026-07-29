@@ -29,6 +29,15 @@ In the new repo, under `Settings`, select `Secrets and Variables` on the left
 menu bar, and then click on `Variables`. Add repository variables for `HUB`
 (name of the hub -- optional) and `IMAGE` (relative path to the image in GAR).
 
+`IMAGE` needs to be prepended by `cal-icor-hubs/user-images/`, which is the
+path where we store user images in GAR.
+
+The final value for `IMAGE` should be:
+
+``` bash
+cal-icor-hubs/user-images/<name-of-user-image>
+```
+
 ![variables](images/actions-variables.png)
 
 #### 3. Create a fork the new repository
