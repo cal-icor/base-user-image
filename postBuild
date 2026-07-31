@@ -21,6 +21,10 @@ cp -p overrides.json ${NB_PYTHON_PREFIX}/share/jupyter/lab/settings
 export VSCODE_EXTENSIONS=${CONDA_DIR}/envs/notebook/share/code-server/extensions
 mkdir -p ${VSCODE_EXTENSIONS}
 
+# set the pip cache dir to something reasonable
+export PIP_CACHE_DIR=${CONDA_DIR}/envs/notebook/pip_cache
+mkdir -p ${PIP_CACHE_DIR}
+
 # This is not reproducible, and it can be difficult to version these.
 for x in \
   ms-toolsai.jupyter \

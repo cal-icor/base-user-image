@@ -4,6 +4,9 @@ if [ ! -f .Renviron ]; then
   echo -e "CONDA_DIR=${CONDA_DIR}" >> .Renviron
 fi
 
+# set the pip cache dir to something reasonable
+export PIP_CACHE_DIR=${CONDA_DIR}/envs/notebook/pip_cache
+
 # requied when exporting pdfs
 # See https://jira-secure.berkeley.edu/browse/DH-305
 export PLAYWRIGHT_BROWSERS_PATH=${CONDA_DIR}
