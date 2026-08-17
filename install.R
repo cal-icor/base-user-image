@@ -49,8 +49,10 @@ packages = list(
   "ggridges" = "0.5.7", # https://github.com/cal-icor/csumb-user-image/issues/25
   "ggtext" = "0.1.2", # https://github.com/cal-icor/csumb-user-image/issues/25
   "ggthemes" = "5.1.0", # https://github.com/cal-icor/csumb-user-image/issues/1
+  "googlesheets4" = "1.1.2", # https://github.com/cal-icor/base-user-image/issues/155
   "gtsummary" = "2.5.0", # https://github.com/cal-icor/base-user-image/issues/112
   "gridExtra" = "2.3", # https://github.com/cal-icor/csumb-user-image/issues/25
+  "infer" = "1.1.0", # https://github.com/cal-icor/base-user-image/issues/154
   "janitor" = "2.2.1", # https://github.com/cal-icor/csumb-user-image/issues/1
   "knitr" = "1.50", # https://github.com/cal-icor/cal-icor-hubs/issues/163
   "leaflet" = "2.2.3", # https://github.com/cal-icor/csumb-user-image/issues/25
@@ -68,8 +70,10 @@ packages = list(
   "plotly" = "4.11.0", # https://github.com/cal-icor/csumb-user-image/issues/25
   "pwr" = "1.3-0", # https://github.com/cal-icor/cal-icor-hubs/issues/163
   "quarto" = "1.5.1",
+  "readr" = "2.2.0", # https://github.com/cal-icor/base-user-image/issues/154
   "rmarkdown" = "2.29", # https://github.com/cal-icor/cal-icor-hubs/issues/163
   "rstac" = "1.0.1",
+  "rstatix" = "1.1.0" # https://github.com/cal-icor/base-user-image/issues/154
   "scales" = "1.4.0", # https://github.com/cal-icor/csumb-user-image/issues/25
   "see" = "0.12.0", # https://github.com/cal-icor/csumb-user-image/issues/1
   "sf" = "1.0-19",
@@ -91,4 +95,5 @@ install_packages_with_versions(packages)
 
 # install GitHub packages
 remotes::install_github("hrbrmstr/waffle") # https://github.com/cal-icor/cal-icor-hubs/issues/294
+remotes::install_github("rpruim/ISIwithR") # https://github.com/cal-icor/base-user-image/issues/154
 remotes::install_github("speegled/fosdata") # https://github.com/cal-icor/base-user-image/issues/117
