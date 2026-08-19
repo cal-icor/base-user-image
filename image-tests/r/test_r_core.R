@@ -56,6 +56,7 @@ packages <- c(
     "naniar",
     "nycflights13",
     "openintro",
+    "ottr",
     "palmerpenguins",
     "plotly",
     "pwr",
