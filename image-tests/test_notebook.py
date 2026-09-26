@@ -61,8 +61,8 @@ def test_cpp_kernel_notebook_execution():
     assert run_notebook("cpp_kernel_test.ipynb", kernel_name="xcpp17")
 
 
-def test_transformers_gpt2_notebook_execution():
-    assert run_notebook("transformers_gpt2_test.ipynb")
+def test_gpt2_stack_notebook_execution():
+    assert run_notebook("gpt2_stack_test.ipynb")
 
 
 if __name__ == "__main__":
