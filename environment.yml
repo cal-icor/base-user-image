@@ -56,6 +56,12 @@ dependencies:
   - statsmodels==0.14.6
   - sympy==1.14.0
 
+  # NLP. Requested for UCSC's computational linguistics course, which loads
+  # GPT-2 to inspect layers/params and run short generations. pytorch above is
+  # the heavy dependency and was already here; this adds ~100MB (tokenizers,
+  # safetensors, huggingface_hub come along as deps). noarch, python>=3.10.
+  - transformers==5.17.0
+
   # pip installed packages, conda is preferred
   - pip:
     # - jupyterlab-a11y-checker==0.2.7
