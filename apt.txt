@@ -66,3 +66,10 @@ libproj-dev
 libsqlite3-dev
 libssl-dev
 libudunits2-dev
+
+# JAGS, for the rjags dependency of the mcp R package.
+# Debian/Ubuntu ship one binary package; it carries the headers too.
+jags  # https://github.com/cal-icor/base-user-image/issues/171
+
+# OpenGL/GLU, for the rgl R package's 3D device
+libglu1-mesa-dev  # https://github.com/cal-icor/base-user-image/issues/171
