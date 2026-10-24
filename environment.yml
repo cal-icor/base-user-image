@@ -46,6 +46,7 @@ dependencies:
   - numpy==2.4.6
   - geopandas==1.1.3
   - geopy==2.4.1
+  - h5py==3.16.0
   - openpyxl==3.1.5
   - pandas==3.0.3
   - plotly==6.8.0
@@ -77,6 +78,7 @@ dependencies:
     - jupysql==0.11.1
     - nbconvert[webpdf]==7.17.1
     - otter-grader==7.0.0
+    - pyscf==2.14.0
 
     # nbgitpuller pre-release
     - nbgitpuller==1.3.0
