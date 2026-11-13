@@ -42,8 +42,10 @@ dependencies:
   - jupyter-server-proxy==4.5.0
 
   # neuroimaging (LAION-fMRI, read straight from the AWS Open Data bucket)
+  # nilearn is deliberately absent: 0.14.1 requires scikit-learn !=1.9.0, which
+  # is what this image pins. It is only needed for the upstream teaching
+  # notebooks, not for laion-fmri itself.
   - nibabel==5.5.0
-  - nilearn==0.14.1
   - s3fs==2026.9.0
 
   # data science

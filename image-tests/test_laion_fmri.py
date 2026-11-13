@@ -31,7 +31,6 @@ def test_main_experiment_subjects():
 
 def test_neuroimaging_stack():
     import nibabel
-    import nilearn  # noqa: F401
     import s3fs  # noqa: F401
 
     assert nibabel.__version__ >= "5.0"
