@@ -41,6 +41,13 @@ dependencies:
   - jupyter-vscode-proxy==0.7
   - jupyter-server-proxy==4.5.0
 
+  # neuroimaging (LAION-fMRI, read straight from the AWS Open Data bucket)
+  # nilearn is deliberately absent: 0.14.1 requires scikit-learn !=1.9.0, which
+  # is what this image pins. It is only needed for the upstream teaching
+  # notebooks, not for laion-fmri itself.
+  - nibabel==5.5.0
+  - s3fs==2026.9.0
+
   # data science
   - datascience==0.18.1
   - matplotlib==3.11.0
@@ -80,6 +87,13 @@ dependencies:
     - nbconvert[webpdf]==7.17.1
     - otter-grader==7.0.0
     - pyscf==2.14.0
+
+    # laion-fmri is not on PyPI; pinned to a commit rather than @main.
+    # awscli is a hard requirement (_s3_engine shells out to `python -m awscli`)
+    # and pins docutils<=0.19, which downgrades it from 0.23 and leaves a
+    # standing `pip check` warning about sphinx. otter-grader is unaffected.
+    - awscli==1.46.3
+    - laion-fmri @ https://github.com/ViCCo-Group/LAION-fMRI/archive/cf5f97404f654410db75964210cefe5fa04f9d77.zip
 
     # nbgitpuller pre-release
     - nbgitpuller==1.3.0
