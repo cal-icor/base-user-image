@@ -21,6 +21,7 @@ gdb
 valgrind
 
 # Dependencies for nbconvert and quarto rendering
+texlive-fonts-extra
 texlive-luatex
 texlive-xetex
 texlive-fonts-recommended
